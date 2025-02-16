@@ -55,16 +55,11 @@ public class BallBase : PoolMember
 
     private void ReleaseCoroutine()
     {
-        if(_coroutine != null)
+        if (_coroutine != null)
         {
             StopCoroutine(_coroutine);
             _coroutine = null;
         }
-    }
-
-    private void GetNewPoint()
-    {
-
     }
 
     public override void Release()
