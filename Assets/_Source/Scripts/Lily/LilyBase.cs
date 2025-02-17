@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -40,6 +39,11 @@ public class LilyBase : MonoBehaviour, IPointerClickHandler
                     _coroutine = StartCoroutine(SpawnProcess());
 
                     break;
+
+                case LilyState.Speed:
+                    
+                    break;
+
                 case LilyState.Host:
 
                     break;
@@ -97,5 +101,5 @@ public class LilyBase : MonoBehaviour, IPointerClickHandler
 
 public enum LilyState
 {
-    None, Attack, Host, Heal
+    None, Attack, Host, Speed, Heal
 }

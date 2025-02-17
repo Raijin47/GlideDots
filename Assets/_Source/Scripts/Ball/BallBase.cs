@@ -53,7 +53,7 @@ public class BallBase : PoolMember
 
     private IEnumerator GetPath()
     {
-        if (Physics.Raycast(transform.position + Direction, Direction, out RaycastHit hit, 100f, _layerMask))
+        if (Physics.Raycast(transform.position + Direction * .3f, Direction, out RaycastHit hit, 100f, _layerMask))
             _target = hit.transform;
 
         yield return null;
