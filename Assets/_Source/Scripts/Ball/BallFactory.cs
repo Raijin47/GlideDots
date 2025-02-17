@@ -14,7 +14,7 @@ public class BallFactory : MonoBehaviour
         _poolBall = new(_ballBase);
         _timer = new(5f);
 
-        StartCoroutine(SpawnProcess());
+        //StartCoroutine(SpawnProcess());
     }
 
     private IEnumerator SpawnProcess()
@@ -23,9 +23,11 @@ public class BallFactory : MonoBehaviour
         {
             _timer.Update();
 
-            if(_timer.IsCompleted)
+            if (_timer.IsCompleted)
             {
-                _poolBall.Spawn(_spawnPoint.position);
+                BallBase ball = _poolBall.Spawn(_spawnPoint.position) as BallBase;
+                ball.Direction = Vector3.back;
+
                 _timer.RestartTimer();
             }
 
@@ -33,11 +35,17 @@ public class BallFactory : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    public void SpawnAttackBall(Vector3 position, Vector3 direction)
     {
-        Gizmos.color = Color.cyan;
-
-        Gizmos.DrawSphere(_spawnPoint.position, .3f);
-        Gizmos.DrawLine(_spawnPoint.position, _spawnPoint.position + Vector3.back);
+        BallBase ball = _poolBall.Spawn(position) as BallBase;
+        ball.Direction = direction;
     }
+
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.cyan;
+
+    //    Gizmos.DrawSphere(_spawnPoint.position, .3f);
+    //    Gizmos.DrawLine(_spawnPoint.position, _spawnPoint.position + Vector3.back);
+    //}
 }

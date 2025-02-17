@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class BallBase : PoolMember
 
     public readonly List<Transform> Points = new();
 
+    private Tween _tween;
     private Coroutine _coroutine;
     private Rigidbody _rigidbody;
     private Transform _target;
@@ -25,8 +27,12 @@ public class BallBase : PoolMember
     
     public override void Activate()
     {
-        Direction = Vector3.back;
+        _tween?.Kill();
+        _tween = transform.DOScale(.5f, 2).From(0).OnComplete(StartMovement);
+    }
 
+    private void StartMovement()
+    {
         ReleaseCoroutine();
         _coroutine = StartCoroutine(MovementProcess());
     }

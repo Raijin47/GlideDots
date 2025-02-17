@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BuildingsGrid : MonoBehaviour
+public class BuildingsHandler : MonoBehaviour
 {
     public Vector2Int GridSize = new(6, 6);
 
@@ -15,7 +15,7 @@ public class BuildingsGrid : MonoBehaviour
         _camera = Camera.main;
     }
 
-    public void StartPlacingBuilding(Building buildingPrefab)
+    public void CreateBuilding(Building buildingPrefab)
     {
         if (_flyingBuilding != null)
         {
