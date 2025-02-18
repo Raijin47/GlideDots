@@ -4,11 +4,6 @@ public class ColumnBase : MonoBehaviour
 {
     [SerializeField] private Vector3 _direction;
 
-    public Vector3 GetDirection(Vector3 direction)
-    {
-        return Vector3.left;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if(other.TryGetComponent(out BallBase ball))
@@ -18,9 +13,4 @@ public class ColumnBase : MonoBehaviour
             Game.Wallet.Add(1);
         }
     }
-}
-
-public enum Direction
-{
-    left, right, up, down
 }

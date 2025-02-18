@@ -224,7 +224,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.9019608, g: 0.71999985, b: 0.44313726, a: 0.6}
-      maxColor: {r: 1, g: 0.31764707, b: 1, a: 1}
+      maxColor: {r: 0.36608592, g: 1, b: 0.3176471, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4856,9 +4856,9 @@ GameObject:
   - component: {fileID: 2865859566301806812}
   - component: {fileID: 4447631198244326497}
   - component: {fileID: 7297371315933003206}
-  - component: {fileID: -5894900431133363713}
+  - component: {fileID: 8756332929717204235}
   m_Layer: 3
-  m_Name: Ball
+  m_Name: BallHeal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4909,7 +4909,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1e839b170837ae458e67d3b3a97b6f2, type: 2}
+  - {fileID: 2100000, guid: fb6595cb6933e884e9e33e5c84370847, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4979,7 +4979,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &-5894900431133363713
+--- !u!114 &8756332929717204235
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4988,7 +4988,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1268827457540924186}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c28b5a47f468bb43a0ff9e19e2a6e58, type: 3}
+  m_Script: {fileID: 11500000, guid: 08d0ac31dc8fbfe47af9765ccbfda70f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
@@ -5218,7 +5218,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0, b: 1, a: 1}
+      maxColor: {r: 0.22345018, g: 1, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

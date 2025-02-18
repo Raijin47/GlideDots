@@ -2,31 +2,45 @@ using UnityEngine;
 
 public class BuildingsHandler : MonoBehaviour
 {
-    public Vector2Int GridSize = new(6, 6);
-
+    private Vector2Int _gridSize = new(7, 9);
     private Building[,] _grid;
     private Building _flyingBuilding;
     private Camera _camera;
 
     private void Awake()
     {
-        _grid = new Building[GridSize.x, GridSize.y];
+        _grid = new Building[_gridSize.x, _gridSize.y];
 
         _camera = Camera.main;
     }
 
     public void CreateBuilding(Building buildingPrefab)
     {
-        if (_flyingBuilding != null)
+        if (Game.Wallet.Money < 10) return;
+
+        bool isCreate = false;
+        
+        for(int x = 0; x < _gridSize.x && !isCreate; x++)
         {
-            Destroy(_flyingBuilding.gameObject);
+            for(int y = 0; y < _gridSize.y && !isCreate; y++)
+            {
+                if(_grid[x, y] == null)
+                {
+                    var build = Instantiate(buildingPrefab);
+                    build.transform.position = new Vector3(x, 0, y);
+                    _grid[x, y] = build;
+                    isCreate = true;
+                    break;
+                }
+            }
         }
 
-        _flyingBuilding = Instantiate(buildingPrefab);
+        if(isCreate) Game.Wallet.Spend(10);
     }
 
     private void Update()
-    {
+    { 
+        return;
         if (_flyingBuilding != null)
         {
             var groundPlane = new Plane(Vector3.up, Vector3.zero);
@@ -41,8 +55,8 @@ public class BuildingsHandler : MonoBehaviour
 
                 bool available = true;
 
-                if (x < 0 || x > GridSize.x - _flyingBuilding.Size.x) available = false;
-                if (y < 0 || y > GridSize.y - _flyingBuilding.Size.y) available = false;
+                if (x < 0 || x > _gridSize.x - 1) available = false;
+                if (y < 0 || y > _gridSize.y - 1) available = false;
 
                 if (available && IsPlaceTaken(x, y)) available = false;
 
@@ -59,26 +73,12 @@ public class BuildingsHandler : MonoBehaviour
 
     private bool IsPlaceTaken(int placeX, int placeY)
     {
-        for (int x = 0; x < _flyingBuilding.Size.x; x++)
-        {
-            for (int y = 0; y < _flyingBuilding.Size.y; y++)
-            {
-                if (_grid[placeX + x, placeY + y] != null) return true;
-            }
-        }
-
-        return false;
+        return _grid[placeX, placeY] != null;
     }
 
     private void PlaceFlyingBuilding(int placeX, int placeY)
     {
-        for (int x = 0; x < _flyingBuilding.Size.x; x++)
-        {
-            for (int y = 0; y < _flyingBuilding.Size.y; y++)
-            {
-                _grid[placeX + x, placeY + y] = _flyingBuilding;
-            }
-        }
+        _grid[placeX, placeY] = _flyingBuilding;
 
         _flyingBuilding.SetNormal();
         _flyingBuilding = null;

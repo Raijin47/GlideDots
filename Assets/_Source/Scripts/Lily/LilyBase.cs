@@ -23,44 +23,53 @@ public class LilyBase : MonoBehaviour, IPointerClickHandler
         get => _state;
         set
         {
-            Release();
-
-            switch (value)
-            {
-                case LilyState.None:
-                    
-                    break;
-
-                case LilyState.Heal: 
-
-                    break;
-
-                case LilyState.Attack:
-                    _coroutine = StartCoroutine(SpawnProcess());
-
-                    break;
-
-                case LilyState.Speed:
-                    
-                    break;
-
-                case LilyState.Host:
-
-                    break;
-            }
-
-            _lily.SetActive(value != LilyState.None);
-
             _hairs[(int)_state].SetActive(false);
-            _hairs[(int)value].SetActive(true);
-
             _state = value;
+
+            Game.Data.Saves.Lilies[_id] = (int)_state;
+            Game.Data.SaveProgress();
+
+            Activate();
         }
     }
 
     private void Start()
     {
         _timer = new(5f);
+
+        _state = (LilyState)Game.Data.Saves.Lilies[_id];
+        Activate();
+    }
+
+    private void Activate()
+    {
+        Release();
+
+        switch (_state)
+        {
+            case LilyState.None:
+
+                break;
+
+            case LilyState.Heal:
+                _coroutine = StartCoroutine(SpawnProcess());
+                break;
+
+            case LilyState.Attack:
+                _coroutine = StartCoroutine(SpawnProcess());
+                break;
+
+            case LilyState.Speed:
+                _coroutine = StartCoroutine(SpawnProcess());
+                break;
+
+            case LilyState.Host:
+
+                break;
+        }
+
+        _lily.SetActive(_state != LilyState.None);
+        _hairs[(int)_state].SetActive(true);
     }
 
     private IEnumerator SpawnProcess()
@@ -71,7 +80,13 @@ public class LilyBase : MonoBehaviour, IPointerClickHandler
 
             if (_timer.IsCompleted)
             {
-                Game.Locator.Factory.SpawnAttackBall(_spawnPoint.position, _direction);
+                switch (_state)
+                {
+                    case LilyState.Attack: Game.Locator.Factory.SpawnAttackBall(_spawnPoint.position, _direction); break;
+                    case LilyState.Heal: Game.Locator.Factory.SpawnHealBall(_spawnPoint.position, _direction); break;
+                    case LilyState.Speed: Game.Locator.Factory.SpawnSpeedBall(_spawnPoint.position, _direction); break;
+                }
+
                 _timer.RestartTimer();
             }
 
