@@ -4,7 +4,6 @@ using UnityEngine;
 public class LilyHandler : MonoBehaviour
 {
     public event Action OnShowPanel;
-    public event Action OnShowUpgradePanel;
 
     private LilyState _state;
     private LilyBase _lily;

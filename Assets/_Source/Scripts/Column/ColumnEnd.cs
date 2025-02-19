@@ -10,6 +10,7 @@ public class ColumnEnd : MonoBehaviour
         {
             _particle.Play();
             ball.ReturnToPool();
+            Game.Locator.Player.AddBall(ball.Type);
             Game.Audio.PlayClip(0);
             Game.Wallet.Add(1);
         }

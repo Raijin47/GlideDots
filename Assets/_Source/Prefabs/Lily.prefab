@@ -9995,13 +9995,13 @@ MonoBehaviour:
   _lily: {fileID: 58696322577843456}
   _hairs:
   - {fileID: 1877000661639702595}
-  - {fileID: 965269905540302448}
-  - {fileID: 3351083191333783206}
-  - {fileID: 7181233917534832976}
   - {fileID: 3734110227105528182}
+  - {fileID: 3351083191333783206}
+  - {fileID: 965269905540302448}
+  - {fileID: 7181233917534832976}
   - {fileID: 114735862424525426}
   _spawnPoint: {fileID: 358459401224464712}
-  _direction: {x: 0, y: 0, z: 0}
+  _direction: 0
 --- !u!1 &6022807511926565773
 GameObject:
   m_ObjectHideFlags: 0
@@ -10384,8 +10384,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.5, y: 0.5, z: 0.25}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1001 &6196165653081678445
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,35 +2,47 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
+    [SerializeField] private LayerMask _layerMask;
+
     [SerializeField] private int _grade;
+    [SerializeField] private Building _nextGrade;
+
     [SerializeField] private Collider _collider;
 
-    [SerializeField] private Vector3 _direction;
-    [SerializeField] private  Renderer _mainRenderer;
+    [SerializeField] private Direction[] _directions;
+    [SerializeField] private Renderer _renderer;
 
-    private readonly Color AvailableColor = new(1, 1, 0, .5f);
-    private readonly Color UnavailableColor = new(1, 0, 0, .5f);
-    private readonly Color BuildColor = new(0, 0, 0, 0f);
-
-    public void SetTransparent(bool available)
+    public int Grade => _grade;
+    public Building NextGrade => _nextGrade;
+    public Color Color
     {
-        _collider.enabled = false;
-        _mainRenderer.material.color = available ? AvailableColor : UnavailableColor;
+        set
+        {
+            _renderer.material.color = value;
+        }
     }
-
-    public void SetNormal()
+    public bool Collider
     {
-        _mainRenderer.material.color = BuildColor;
-        _collider.enabled = true;
+        set
+        {
+            _collider.enabled = value;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out BallBase ball))
         {
-            ball.Direction = _direction;
-            Game.Audio.PlayClip(0);
+            ball.Direction = _directions[(int)ball.Direction];
+            ball.Target = Game.Locator.Factory.GetPath(transform.position, ball.Direction);
+            ball.Power = IncreacePower(ball.Power);
             Game.Wallet.Add(1);
         }
+    }
+
+    private float IncreacePower(float value)
+    {
+
+        return value;
     }
 }

@@ -12,7 +12,7 @@ public class LilyBase : MonoBehaviour, IPointerClickHandler
     
     [Space(10)]
     [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private Vector3 _direction;
+    [SerializeField] private Direction _direction;
 
     private LilyState _state;
     private Coroutine _coroutine;
@@ -104,14 +104,6 @@ public class LilyBase : MonoBehaviour, IPointerClickHandler
     }
 
     public void OnPointerClick(PointerEventData eventData) => Game.Locator.LilyHandler.ShowPanel(this);
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.cyan;
-
-        Gizmos.DrawSphere(_spawnPoint.position, .3f);
-        Gizmos.DrawLine(_spawnPoint.position, _spawnPoint.position + _direction);
-    }
 }
 
 public enum LilyState

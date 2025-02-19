@@ -1,34 +1,30 @@
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BallBase : PoolMember
 {
+
+    [SerializeField] private BallType _type;
     [SerializeField] private float _speed;
-    [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private float _power;
 
-    public Vector3 Direction { private get; set; }
+    public float Power { get; set; }
 
-    public readonly List<Transform> Points = new();
+    public BallType Type => _type;
+    public Direction Direction { get; set; }
 
     private Tween _tween;
     private Coroutine _coroutine;
-    private Rigidbody _rigidbody;
-    private Transform _target;
+    public Vector3 Target { get; set; }
 
-    public override void Init()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-
-        Activate();
-    }
-
+    public override void Init() => Activate();
     
     public override void Activate()
     {
         _tween?.Kill();
-        _tween = transform.DOScale(.5f, 2).From(0).OnComplete(StartMovement);
+        _tween = transform.DOScale(.4f, 2).From(0).OnComplete(StartMovement);
+        Power = _power;
     }
 
     private void StartMovement()
@@ -41,22 +37,9 @@ public class BallBase : PoolMember
     {
         while(true)
         {
-            yield return GetPath();
-
-            while (transform.position != _target.position)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
-                yield return null;
-            }
+            transform.position = Vector3.MoveTowards(transform.position, Target, _speed * Time.deltaTime);
+            yield return null;
         }
-    }
-
-    private IEnumerator GetPath()
-    {
-        if (Physics.Raycast(transform.position + Direction * .3f, Direction, out RaycastHit hit, 100f, _layerMask))
-            _target = hit.transform;
-
-        yield return null;
     }
 
     private void ReleaseCoroutine()
@@ -72,4 +55,9 @@ public class BallBase : PoolMember
     {
 
     }
+}
+
+public enum BallType
+{
+    Speed, Damage, Heal, Attack
 }
