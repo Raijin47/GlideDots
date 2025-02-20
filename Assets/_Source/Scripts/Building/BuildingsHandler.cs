@@ -28,19 +28,24 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         _camera = Camera.main;
     }
 
-    private void Start()
+    private void Start() => LoadingBuilds();
+
+    private void LoadingBuilds()
     {
+        int index = 0;
+
         for (int x = 0; x < _gridSize.x; x++)
         {
             for (int y = 0; y < _gridSize.y; y++)
             {
-                if(Game.Data.Saves.Grid[x,y] != 0)
+                if (Game.Data.Saves.Cell[index] != 0)
                 {
-                    Debug.Log("+");
-                    var build = Instantiate(_prefabs[Game.Data.Saves.Grid[x, y]]);
+                    var build = Instantiate(_prefabs[Game.Data.Saves.Cell[index]]);
                     build.transform.position = new Vector3(x, 0, y);
                     _grid[x, y] = build;
                 }
+
+                index++;
             }
         }
     }
@@ -60,7 +65,8 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
                     var build = Instantiate(buildingPrefab);
                     build.transform.position = new Vector3(x, 0, y);
                     _grid[x, y] = build;
-                    Game.Data.Saves.Grid[x, y] = build.Grade;
+                    SaveBuild(x, y, build.Grade);
+                    //Game.Data.Saves.Grid[x, y] = build.Grade;
                     Game.Data.SaveProgress();
                     isCreate = true;
                     break;
@@ -152,7 +158,9 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
             if(available)
             {
                 _grid[x, y] = _flyingBuilding;
-                Game.Data.Saves.Grid[x, y] = _flyingBuilding.Grade;
+                //Game.Data.Saves.Grid[x, y] = _flyingBuilding.Grade;
+                SaveBuild(_onBeginX, _onBeginY, 0);
+                SaveBuild(x, y, _flyingBuilding.Grade);
             }
             else
             {
@@ -164,8 +172,10 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
                     newGrade.transform.position = new Vector3(x, 0, y);
                     _grid[x, y] = newGrade;
 
-                    Game.Data.Saves.Grid[_onBeginX, _onBeginY] = 0;
-                    Game.Data.Saves.Grid[x, y] = newGrade.Grade;
+                    //Game.Data.Saves.Grid[_onBeginX, _onBeginY] = 0;
+                    //Game.Data.Saves.Grid[x, y] = newGrade.Grade;
+                    SaveBuild(_onBeginX, _onBeginY, 0);
+                    SaveBuild(x, y, newGrade.Grade);
 
                     Destroy(_flyingBuilding.gameObject);
 
@@ -187,5 +197,22 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         _flyingBuilding.Collider = true;
         _flyingBuilding.Color = CreateColor;
         _flyingBuilding = null;
+    }
+
+    private void SaveBuild(int cellX, int cellY, int value)
+    {
+        int temp = 0;
+        int index = 0;
+
+        for(int x = 0; x < _gridSize.x; x++)
+        {
+            for(int y = 0; y < _gridSize.y; y++)
+            {
+                if (x == cellX && cellY == y) index = temp;
+                temp++;
+            }
+        }
+
+        Game.Data.Saves.Cell[index] = value;
     }
 }
