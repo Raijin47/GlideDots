@@ -1,13 +1,18 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
+    [SerializeField] private TextMeshProUGUI _textPrice;
+
     [SerializeField] private Building[] _prefabs;
     [SerializeField] private ButtonBase _buttonCreate;
     [SerializeField] private GameObject _mergeParticle;
     [SerializeField] private ParticleSystem _particle;
 
+    private readonly int BasePrice = 5;
+    private int _currentPrice;
     private Vector2Int _gridSize = new(7, 9);
     private Building[,] _grid;
     private Building _flyingBuilding;
@@ -28,7 +33,12 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         _camera = Camera.main;
     }
 
-    private void Start() => LoadingBuilds();
+    private void Start()
+    {
+        LoadingBuilds();
+        UpdateUI();
+        _buttonCreate.OnClick.AddListener(CreateBuilding);
+    }
 
     private void LoadingBuilds()
     {
@@ -50,9 +60,9 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         }
     }
 
-    public void CreateBuilding(Building buildingPrefab)
+    private void CreateBuilding()
     {
-        if (Game.Wallet.Money < 10) return;
+        if (Game.Wallet.Money < _currentPrice) return;
 
         bool isCreate = false;
         
@@ -62,19 +72,30 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
             {
                 if(_grid[x, y] == null)
                 {
-                    var build = Instantiate(buildingPrefab);
+                    var build = Instantiate(_prefabs[0]);
                     build.transform.position = new Vector3(x, 0, y);
                     _grid[x, y] = build;
                     SaveBuild(x, y, build.Grade);
-                    //Game.Data.Saves.Grid[x, y] = build.Grade;
-                    Game.Data.SaveProgress();
                     isCreate = true;
                     break;
                 }
             }
         }
 
-        if(isCreate) Game.Wallet.Spend(10);
+        if(isCreate)
+        {
+            Game.Wallet.Spend(_currentPrice);
+            Game.Data.Saves.BuildCount++;
+            UpdateUI();
+
+            Game.Data.SaveProgress();
+        }
+    }
+
+    private void UpdateUI()
+    {
+        _currentPrice = (int)Service.Calculate(Game.Data.Saves.BuildCount, BasePrice, 1.03f);
+        _textPrice.text = $"Buy Build\n{_currentPrice}<sprite=0>";
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -118,13 +139,14 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
             if (x < 0 || x > _gridSize.x - 1) available = false;
             if (y < 0 || y > _gridSize.y - 1) available = false;
 
-            if (available && _grid[x, y] != null) available = false;
+            if (available)
+                _isMerge = _grid[x, y] != null && _flyingBuilding.Grade == _grid[x, y].Grade;
+
+            if (available && _grid[x, y] != null) available = false; 
 
             _flyingBuilding.transform.position = new Vector3(x, 0, y);
 
-
-            _isMerge = _grid[x, y] != null && _flyingBuilding.Grade == _grid[x, y].Grade;
-
+ 
             _flyingBuilding.Color = available ?
                 AvailableColor : _isMerge ?
                 MergeColor : UnavailableColor;
@@ -158,7 +180,6 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
             if(available)
             {
                 _grid[x, y] = _flyingBuilding;
-                //Game.Data.Saves.Grid[x, y] = _flyingBuilding.Grade;
                 SaveBuild(_onBeginX, _onBeginY, 0);
                 SaveBuild(x, y, _flyingBuilding.Grade);
             }
@@ -172,8 +193,8 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
                     newGrade.transform.position = new Vector3(x, 0, y);
                     _grid[x, y] = newGrade;
 
-                    //Game.Data.Saves.Grid[_onBeginX, _onBeginY] = 0;
-                    //Game.Data.Saves.Grid[x, y] = newGrade.Grade;
+                    Game.Audio.PlayClip(4);
+
                     SaveBuild(_onBeginX, _onBeginY, 0);
                     SaveBuild(x, y, newGrade.Grade);
 

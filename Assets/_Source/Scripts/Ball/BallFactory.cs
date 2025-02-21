@@ -13,14 +13,13 @@ public class BallFactory : MonoBehaviour
     private Pool _poolDamageBall;
     private Pool _poolHealBall;
     private Pool _poolSpeedBall;
-    private Pool _poolAttackBall;
+
 
     private void Start()
     {
         _poolDamageBall = new(_damageBall);
         _poolHealBall = new(_healBall);
         _poolSpeedBall = new(_speedBall);
-        _poolAttackBall = new(_attackBall);
     }
 
     public void SpawnAttackBall(Vector3 position, Direction direction)

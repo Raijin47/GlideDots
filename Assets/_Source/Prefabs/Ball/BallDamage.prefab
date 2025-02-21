@@ -4993,6 +4993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 1
   _speed: 5
+  _power: 1
 --- !u!1 &4506215985602250426
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,8 +6,9 @@ public class BallBase : PoolMember
 {
 
     [SerializeField] private BallType _type;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _power;
+
+    private const float _speed = 5;
+    private int _limitIncrease;
 
     public float Power { get; set; }
 
@@ -22,9 +23,17 @@ public class BallBase : PoolMember
     
     public override void Activate()
     {
+        _limitIncrease = 10;
         _tween?.Kill();
         _tween = transform.DOScale(.4f, 2).From(0).OnComplete(StartMovement);
-        Power = _power;
+        Power = Service.Power;
+    }
+
+    public void IncreasePower(int grade)
+    {
+        if (_limitIncrease <= 0) return;
+        Power = Service.IncreaseValue(Power, grade);
+        _limitIncrease--;
     }
 
     private void StartMovement()
@@ -53,7 +62,7 @@ public class BallBase : PoolMember
 
     public override void Release()
     {
-
+        _tween?.Kill();
     }
 }
 

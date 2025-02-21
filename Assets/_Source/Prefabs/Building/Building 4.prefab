@@ -69,14 +69,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b12d5d2b121af4abe94a273f43f013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 1
   _grade: 4
-  _nextGrade: {fileID: 4435511568422579286, guid: cbe6b514cb9332b4b885d66c438e7b95, type: 3}
+  _nextGrade: {fileID: 4435511568422579286, guid: 331464fff415b5242953ac29ea89ce2b, type: 3}
   _collider: {fileID: 1752086043250842801}
-  _directions: 01000000030000000000000002000000
   _renderer: {fileID: 2399359955548342180}
+  _directions: 01000000030000000000000002000000
 --- !u!1 &7909438372048702434
 GameObject:
   m_ObjectHideFlags: 0

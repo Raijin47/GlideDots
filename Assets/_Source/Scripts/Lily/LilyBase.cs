@@ -62,10 +62,6 @@ public class LilyBase : MonoBehaviour, IPointerClickHandler
             case LilyState.Speed:
                 _coroutine = StartCoroutine(SpawnProcess());
                 break;
-
-            case LilyState.Host:
-
-                break;
         }
 
         _lily.SetActive(_state != LilyState.None);
@@ -108,5 +104,5 @@ public class LilyBase : MonoBehaviour, IPointerClickHandler
 
 public enum LilyState
 {
-    None, Attack, Host, Speed, Heal
+    None, Attack, Speed, Heal
 }
