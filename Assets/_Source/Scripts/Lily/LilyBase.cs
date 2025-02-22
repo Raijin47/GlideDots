@@ -99,7 +99,12 @@ public class LilyBase : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData) => Game.Locator.LilyHandler.ShowPanel(this);
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!Game.Data.Saves.IsTutorialComplated) return;
+        Game.Locator.LilyHandler.ShowPanel(this);
+    }
+
 }
 
 public enum LilyState

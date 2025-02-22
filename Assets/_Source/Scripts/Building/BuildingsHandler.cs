@@ -100,6 +100,8 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!Game.Data.Saves.IsTutorialComplated) return;
+
         var groundPlane = new Plane(Vector3.up, Vector3.zero);
         Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
