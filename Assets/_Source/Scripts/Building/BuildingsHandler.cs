@@ -60,7 +60,7 @@ public class BuildingsHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         }
     }
 
-    private void CreateBuilding()
+    public void CreateBuilding()
     {
         if (Game.Wallet.Money < _currentPrice) return;
 

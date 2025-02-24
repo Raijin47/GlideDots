@@ -7,6 +7,8 @@ public class TutorialHelper : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Transform _anchor;
     [SerializeField] private GameObject _hand;
 
+    public Transform Hand => _anchor;
+
     private Tween _tween;
     public bool IsShow
     {
@@ -18,7 +20,7 @@ public class TutorialHelper : MonoBehaviour, IPointerClickHandler
 
     private void Start()
     {
-        if (Game.Data.Saves.IsTutorialComplated) Destroy(this);
+        if (Game.Data.Saves.IsTutorialComplated) Destroy(gameObject);
         else
         {
             _tween = _anchor.DOScale(0.7f, 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);

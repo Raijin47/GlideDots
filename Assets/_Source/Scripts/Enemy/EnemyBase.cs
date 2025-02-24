@@ -76,6 +76,8 @@ public class EnemyBase : MonoBehaviour
 
     private IEnumerator UpdateProcess()
     {
+        yield return new WaitWhile(() => !Game.Data.Saves.IsTutorialComplated);
+
         while (!_isDeath)
         {
             _timer.Update();
